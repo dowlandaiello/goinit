@@ -36,6 +36,18 @@ func main() {
 		panic(err) // Panic
 	}
 
+	dockerFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/Dockerfile", goPath, modulePath))) // Create dockerfile
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
+	_, err = dockerFile.WriteString(fmt.Sprintf("FROM golang:1.12\n\nWORKDIR /go/src/%s\nCOPY . .\n\nRUN go get -d -v ./...\n\nCMD go run main.go", modulePath)) // Write docker file
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
 	cmd := exec.Command("git", "init") // Initialize git repository
 
 	cmd.Dir = filepath.FromSlash(fmt.Sprintf("%s/src/%s", goPath, modulePath)) // Set CMD dir
@@ -50,9 +62,5 @@ func main() {
 
 	cmd.Dir = filepath.FromSlash(fmt.Sprintf("%s/src/%s", goPath, modulePath)) // Set CMD dir
 
-	_, err = cmd.Output() // Get output
-
-	if err != nil { // Check for errors
-		panic(err) // Panic
-	}
+	cmd.Output() // Run
 }
