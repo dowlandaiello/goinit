@@ -18,13 +18,13 @@ func main() {
 		goPath = build.Default.GOPATH // Set gopath
 	}
 
-	err := os.MkdirAll(filepath.FromSlash(fmt.Sprintf("%s/%s", goPath, modulePath)), os.ModePerm) // Make project dir
+	err := os.MkdirAll(filepath.FromSlash(fmt.Sprintf("%s/src/%s", goPath, modulePath)), os.ModePerm) // Make project dir
 
 	if err != nil { // Check for errors
 		panic(err) // Panic
 	}
 
-	moduleFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/%s/go.mod", goPath, modulePath))) // Create module file
+	moduleFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/go.mod", goPath, modulePath))) // Create module file
 
 	if err != nil { // Check for errors
 		panic(err) // Panic
@@ -38,6 +38,8 @@ func main() {
 
 	cmd := exec.Command("git", "init") // Initialize git repository
 
+	cmd.Dir = filepath.FromSlash(fmt.Sprintf("%s/src/%s", goPath, modulePath)) // Set CMD dir
+
 	_, err = cmd.Output() // Get output
 
 	if err != nil { // Check for errors
@@ -45,6 +47,8 @@ func main() {
 	}
 
 	cmd = exec.Command("git", "remote", "add", "origin", fmt.Sprintf("https://github.com/%s.git", modulePath)) // Set git remote
+
+	cmd.Dir = filepath.FromSlash(fmt.Sprintf("%s/src/%s", goPath, modulePath)) // Set CMD dir
 
 	_, err = cmd.Output() // Get output
 
