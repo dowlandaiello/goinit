@@ -36,6 +36,18 @@ func main() {
 		panic(err) // Panic
 	}
 
+	mainFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/main.go", goPath, modulePath))) // Create main.go
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
+	_, err = mainFile.WriteString("// package main is the main package.\npackage main\n\n// main is the main function.\nfunc main() {\n}") // Write module file
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
 	dockerFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/Dockerfile", goPath, modulePath))) // Create dockerfile
 
 	if err != nil { // Check for errors

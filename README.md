@@ -21,3 +21,4 @@ goinit github.com/username/package
 - Initializes a git repository in the directory.
 - Sets the remote to "https://github.com/user/package.git".
 - Creates a new golang Dockerfile in the given directory that runs main.go (without any params).
+- Creates a main.go file in the given directory.
