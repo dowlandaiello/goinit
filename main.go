@@ -48,6 +48,18 @@ func main() {
 		panic(err) // Panic
 	}
 
+	travisFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/.travis.yml", goPath, modulePath))) // Create travis
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
+	_, err = travisFile.WriteString("language: go\n\ngo:\n  - 1.12\n  - master\n\ninstall: true\n\nsudo: false\n\nmatrix:\n  allow_failures:\n    - go: master\n  fast_finish: true\n\nnotifications:\n  email: false\n\nbefore_install:\n  - export GO111MODULE=on # Enable go mod\n  - go mod vendor # Download deps\n\nbefore_script:\n  - GO_FILES=$(find . -iname '*.go' -type f | grep -v -r ./vendor/)\n  - go get github.com/mattn/goveralls\n  - go get golang.org/x/tools/cmd/cover\n  - go get -u golang.org/x/lint/golint\n  - go get github.com/fzip/gocyclo\n\nscript:\n  - test -z $(gofmt -s -l $GO_FILES)\n  - go vet ./...\n  - go test ./...\n  - go build") // Write module file
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
 	dockerFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/Dockerfile", goPath, modulePath))) // Create dockerfile
 
 	if err != nil { // Check for errors
