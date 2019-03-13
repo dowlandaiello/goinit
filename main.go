@@ -60,6 +60,18 @@ func main() {
 		panic(err) // Panic
 	}
 
+	gitignoreFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/.gitignore", goPath, modulePath))) // Create .gitignore
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
+	_, err = gitignoreFile.WriteString("# Binaries for programs or plugins\n*.exe\n*.exe~\n*.dll\n*.so\n*.dylib\n\n# Test binary, build with `go test -c`\n*.test\n\n# Output of the go coverage tool, specifically when used with LiteIDE\n*.out\n\n# VS Code Prefs\n.vscode/") // Write gitignore file
+
+	if err != nil { // Check for errors
+		panic(err) // Panic
+	}
+
 	dockerFile, err := os.Create(filepath.FromSlash(fmt.Sprintf("%s/src/%s/Dockerfile", goPath, modulePath))) // Create dockerfile
 
 	if err != nil { // Check for errors

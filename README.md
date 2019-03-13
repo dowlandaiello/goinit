@@ -23,3 +23,4 @@ goinit github.com/username/package
 - Creates a new golang Dockerfile in the given directory that runs main.go (without any params).
 - Creates a main.go file in the given directory.
 - Creates a new golang .travis.yml in the given directory.
+- Creates a new golang .gitignore in the given directory.
